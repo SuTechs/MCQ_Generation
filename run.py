@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS, cross_origin
 
 from app.mcq_generation import MCQGenerator
@@ -10,10 +10,22 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 mcq = MCQGenerator()
 
 
+# @app.route('/')
+# @cross_origin()
+# def hello_world():
+#     return 'Hello World!'
+
+
 @app.route('/')
 @cross_origin()
-def hello_world():
-    return 'Hello World!'
+def index():
+    return send_from_directory('static/web', 'index.html')
+
+
+@app.route('/<path:path>')
+@cross_origin()
+def static_files(path):
+    return send_from_directory('static/web', path)
 
 
 @app.route("/generate_question", methods=["POST"])
