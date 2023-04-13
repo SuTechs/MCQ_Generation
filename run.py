@@ -19,13 +19,13 @@ mcq = MCQGenerator()
 @app.route('/')
 @cross_origin()
 def index():
-    return send_from_directory('static/web', 'index.html')
+    return send_from_directory('static', 'index.html')
 
 
 @app.route('/<path:path>')
 @cross_origin()
 def static_files(path):
-    return send_from_directory('static/web', path)
+    return send_from_directory('static', path)
 
 
 @app.route("/generate_question", methods=["POST"])
