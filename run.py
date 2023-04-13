@@ -1,17 +1,23 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 
 from app.mcq_generation import MCQGenerator
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 mcq = MCQGenerator()
 
 
 @app.route('/')
+@cross_origin()
 def hello_world():
     return 'Hello World!'
 
 
 @app.route("/generate_question", methods=["POST"])
+@cross_origin()
 def generate():
     try:
         data = request.json
@@ -20,7 +26,7 @@ def generate():
         if not text:
             return jsonify({'error': 'Text is required'}), 400
 
-        count = data.get('count', 10)
+        count = data.get('count', 9)
 
         questions = mcq.generate_mcq_questions(text, count)
 
